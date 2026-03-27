@@ -1,17 +1,62 @@
 package com.pao.laboratory05.audit;
 
-/**
- * Exercise 4 (Bonus) — Audit Log
- *
- * Cerințele complete se află în:
- *   src/com/pao/laboratory05/Readme.md  →  secțiunea "Exercise 4 (Bonus) — Audit"
- *
- * Extinde soluția de la Exercise 3 cu un sistem de audit bazat pe record.
- * Creează fișierele de la zero în acest pachet, apoi rulează Main.java
- * pentru a verifica output-ul așteptat din Readme.
- */
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Cerințele se află în Readme.md — secțiunea Exercise 4 (Bonus).");
+        Scanner scanner = new Scanner(System.in);
+        AngajatService service = AngajatService.getInstance();
+        boolean running = true;
+        while (running) {
+            System.out.println("\n===== Gestionare Angajați =====");
+            System.out.println("1. Adaugă angajat");
+            System.out.println("2. Listare după salariu");
+            System.out.println("3. Caută după departament");
+            System.out.println("4. Gestionare Angajați (cu Audit)");
+            System.out.println("0. Ieșire");
+            System.out.print("Opțiune: ");
+
+            String option = scanner.nextLine().trim();
+
+            switch (option) {
+                case "1":
+                    System.out.print("Nume: ");
+                    String nume = scanner.nextLine().trim();
+                    System.out.print("Departament (nume): ");
+                    String depNume = scanner.nextLine().trim();
+                    System.out.print("Departament (locatie): ");
+                    String depLoc = scanner.nextLine().trim();
+                    System.out.print("Salariu: ");
+                    int sal = Integer.parseInt(scanner.nextLine().trim());
+                    service.addAngajat(new Angajat(nume, new Departament(depNume, depLoc), sal));
+                    System.out.println("Angajat adăugat: " + nume);
+                    break;
+
+                case "2":
+                    System.out.print("--- Angajați după salariu (descrescător) ---\n");
+                    service.listBySalary();
+                    break;
+
+                case "3":
+                    System.out.print("Departament: ");
+                    String dep = scanner.nextLine().trim();
+                    System.out.print("--- Angajați din " + dep + " ---\n");
+                    service.findByDepartament(dep);
+                    break;
+
+                case "4":
+                    System.out.print("--- Audit Log ---\n");
+                    service.printAuditLog();
+                    break;
+
+                case "0":
+                    running = false;
+                    System.out.println("La revedere!");
+                    break;
+
+                default:
+                    System.out.println("Opțiune invalidă.");
+            }
+        }
     }
 }
