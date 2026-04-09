@@ -22,21 +22,21 @@ public class Main {
                     try {
                         order.nextState();
                     } catch (OrderIsAlreadyFinalException e) {
-                        System.out.println("Order is already in a final state.");
+                        System.out.println(e.getMessage());
                     }
                 }
                 case cancel -> {
                     try {
                         order.cancel();
                     } catch (CannotCancelFinalOrderException e) {
-                        System.out.println("Cannot cancel a final state order.");
+                        System.out.println(e.getMessage());
                     }
                 }
                 case undo -> {
                     try {
                         order.undoState();
                     } catch (CannotRevertInitialOrderStateException e) {
-                        System.out.println("Cannot undo the initial order state.");
+                        System.out.println(e.getMessage());
                     }
                 }
                 case QUIT -> {
