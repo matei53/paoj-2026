@@ -1,7 +1,7 @@
 package com.pao.project.exception;
 
-public class InputInvalidException extends RuntimeException {
-    public InputInvalidException() {
-        super("Input invalid");
+public class NumarExemplareInvalid extends RuntimeException {
+    public NumarExemplareInvalid() {
+        super("Numar exemplare invalid");
     }
 }

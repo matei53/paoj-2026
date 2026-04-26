@@ -1,4 +1,6 @@
 package com.pao.project.model;
 
-public interface Penalizare {
+public abstract class Penalizare {
+    public abstract String getTip();
+    public abstract double calculeazaSuma();
 }

@@ -1,4 +1,4 @@
 package com.pao.project.model;
 
-public class Exemplar {
+public record Exemplar(int cod) {
 }
