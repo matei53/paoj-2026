@@ -8,7 +8,7 @@ import java.nio.ByteOrder;
 import java.util.*;
 
 public class Main {
-    private static final String OUTPUT_FILE = "output/lab09_ex2.bin";
+    private static final String OUTPUT_FILE = "src/com/pao/laboratory09/output/lab09_ex2.bin";
     private static final int RECORD_SIZE = 32;
 
     public static void main(String[] args) throws Exception {
@@ -31,6 +31,55 @@ public class Main {
         // Format linie output:
         //   [idx] id=<id> data=<data> tip=<CREDIT|DEBIT> suma=<suma:.2f> RON status=<STATUS>
 
-        System.out.println("TODO: implementează exercițiul 2");
+        Scanner scanner = new Scanner(System.in);
+        int N = scanner.nextInt();
+
+        try (DataOutputStream out = new DataOutputStream(
+                new FileOutputStream(OUTPUT_FILE))) {
+
+            for (int i = 0; i < N; i++) {
+                int id = scanner.nextInt();
+                byte[] idBytes = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(id).array();
+                out.write(idBytes);
+
+                double suma = scanner.nextDouble();
+                byte[] sumaBytes = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putDouble(suma).array();
+                out.write(sumaBytes);
+
+                String data = scanner.next();
+                byte[] dataBytes = new byte[10];
+                byte[] v = data.getBytes("ASCII");
+                for (int j = 0; j < v.length; j++) dataBytes[j] = v[j];
+                for (int j = v.length; j < 10; j++) dataBytes[j] = (byte) ' ';
+                out.write(dataBytes);
+
+                TipTranzactie tip = TipTranzactie.valueOf(scanner.next());
+                out.write(tip == TipTranzactie.CREDIT ? 0 : 1);
+
+                out.write(0); //pending
+
+                out.write(new byte[8]); //padding
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        while (scanner.hasNext()) {
+            String comanda = scanner.next();
+            if (comanda.equals("READ")) {
+                long idx = scanner.nextLong();
+                RandomAccessFile raf = new RandomAccessFile(OUTPUT_FILE, "r");
+                raf.seek(idx * RECORD_SIZE);
+
+                raf.close();
+            }
+            else if (comanda.equals("UPDATE")) {
+
+            }
+            else if (comanda.equals("PRINT_ALL")) {
+
+            }
+        }
     }
 }
