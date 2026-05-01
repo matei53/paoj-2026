@@ -69,16 +69,58 @@ public class Main {
             String comanda = scanner.next();
             if (comanda.equals("READ")) {
                 long idx = scanner.nextLong();
-                RandomAccessFile raf = new RandomAccessFile(OUTPUT_FILE, "r");
+                RandomAccessFile raf = new RandomAccessFile(OUTPUT_FILE, "rw");
                 raf.seek(idx * RECORD_SIZE);
+                byte[] bytes = new byte[RECORD_SIZE];
+                raf.readFully(bytes);
+                ByteBuffer buffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);
+
+                int id = buffer.getInt(0);
+                double suma = buffer.getDouble(4);
+                String data = new String(bytes, 12, 10, "ASCII").trim();
+                String tip = bytes[22] == 0 ? "CREDIT" : "DEBIT";
+                String status;
+                if (bytes[23] == 0) status = "PENDING";
+                else if (bytes[23] == 1) status = "PROCESSED";
+                else status = "REJECTED";
+                System.out.printf("[%d] id=%d data=%s tip=%s suma=%.2f RON status=%s\n",
+                        idx, id, data, tip, suma, status);
 
                 raf.close();
             }
             else if (comanda.equals("UPDATE")) {
-
+                long idx = scanner.nextLong();
+                String status = scanner.next();
+                RandomAccessFile raf = new RandomAccessFile(OUTPUT_FILE, "rw");
+                raf.seek(idx * 32 + 23);
+                if (status.equals("PENDING")) raf.write(0);
+                else if (status.equals("PROCESSED")) raf.write(1);
+                else if (status.equals("REJECTED")) raf.write(2);
+                raf.close();
+                System.out.println("Updated [" + idx + "]: " + status);
             }
             else if (comanda.equals("PRINT_ALL")) {
+                RandomAccessFile raf = new RandomAccessFile(OUTPUT_FILE, "rw");
+                int idx = 0;
+                int lungime = (int) raf.length() / RECORD_SIZE;
+                while(idx < lungime) {
+                    byte[] bytes = new byte[RECORD_SIZE];
+                    raf.readFully(bytes);
+                    ByteBuffer buffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);
 
+                    int id = buffer.getInt(0);
+                    double suma = buffer.getDouble(4);
+                    String data = new String(bytes, 12, 10, "ASCII").trim();
+                    String tip = bytes[22] == 0 ? "CREDIT" : "DEBIT";
+                    String status;
+                    if (bytes[23] == 0) status = "PENDING";
+                    else if (bytes[23] == 1) status = "PROCESSED";
+                    else status = "REJECTED";
+                    System.out.printf("[%d] id=%d data=%s tip=%s suma=%.2f RON status=%s\n",
+                            idx, id, data, tip, suma, status);
+                    idx++;
+                }
+                raf.close();
             }
         }
     }
