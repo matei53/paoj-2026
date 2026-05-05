@@ -16,6 +16,7 @@ public class Main {
             students.add(new Student(parts[0], Integer.parseInt(parts[1].trim()), new Adresa(parts[2], parts[3])));
             line = input.readLine();
         }
+        input.close();
 
         Scanner scanner = new Scanner(System.in);
         String instructiune = scanner.nextLine();
