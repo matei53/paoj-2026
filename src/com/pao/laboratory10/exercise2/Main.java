@@ -37,6 +37,97 @@ public class Main {
         // Format linie tranzacție: [id] data tip: suma RON
         //   Ex: [1] 2024-01-15 CREDIT: 1500.00 RON
 
-        System.out.println("TODO: implementează exercițiul 2");
+        List<Tranzactie> tranzactii = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+
+        int nr = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < nr; i++) {
+            String[] parti = scanner.nextLine().split(" ");
+            int id = Integer.parseInt(parti[0]);
+            double suma = Double.parseDouble(parti[1]);
+            String data = parti[2];
+            TipTranzactie tip = TipTranzactie.valueOf(parti[3]);
+            tranzactii.add(new Tranzactie(id, suma, data, tip));
+        }
+
+        while (scanner.hasNextLine()) {
+            String[] parti = scanner.nextLine().split(" ");
+            String comanda = parti[0];
+
+            switch (comanda) {
+                case "UNIQUE_IDS": {
+                    LinkedHashSet<Integer> ids = new LinkedHashSet<>();
+                    for (Tranzactie t : tranzactii) {
+                        ids.add(t.getId());
+                    }
+                    System.out.printf("IDs unice (%d): %s%n", ids.size(), ids);
+                    break;
+                }
+                case "MONTHLY_REPORT": {
+                    TreeMap<String, double[]> peLuna = new TreeMap<>();
+                    for (Tranzactie t : tranzactii) {
+                        String d = t.getData().substring(0, 7);
+                        peLuna.putIfAbsent(d, new double[]{0.0, 0.0});
+                        double[] sume = peLuna.get(d);
+                        if (t.getTip() == TipTranzactie.CREDIT)
+                            sume[0] += t.getSuma();
+                        else
+                            sume[1] += t.getSuma();
+                    }
+                    for (var entry : peLuna.entrySet()) {
+                        double[] sume = entry.getValue();
+                        System.out.printf("%s: CREDIT %.2f RON, DEBIT %.2f RON%n", entry.getKey(), sume[0], sume[1]);
+                    }
+                    break;
+                }
+                case "TOP": {
+                    int n = Integer.parseInt(parti[1]);
+                    List<Tranzactie> tr = tranzactii;
+                    Collections.sort(tr, Comparator.comparingDouble(Tranzactie::getSuma));
+                    List<Tranzactie> sublist = tr.subList(0, nr);
+                    System.out.println("Top " + n);
+                    for (Tranzactie t : sublist) {
+                        System.out.println(t.toString());
+                    }
+                    break;
+                }
+                case "SORT_ASC": {
+                    Collections.sort(tranzactii, Comparator.comparingDouble(Tranzactie::getSuma));
+                    for (Tranzactie t : tranzactii) {
+                        System.out.println(t.toString());
+                    }
+                    break;
+                }
+                case "SORT_DESC": {
+                    Collections.sort(tranzactii, Comparator.comparingDouble(Tranzactie::getSuma).reversed());
+                    for (Tranzactie t : tranzactii) {
+                        System.out.println(t.toString());
+                    }
+                    break;
+                }
+                case "REVERSE": {
+                    Collections.reverse(tranzactii);
+                    for (Tranzactie t : tranzactii) {
+                        System.out.println(t.toString());
+                    }
+                    break;
+                }
+                case "MIN_MAX": {
+                    Tranzactie min = Collections.min(tranzactii, Comparator.comparingDouble(Tranzactie::getSuma));
+                    Tranzactie max = Collections.max(tranzactii, Comparator.comparingDouble(Tranzactie::getSuma));
+                    System.out.println("MIN: " + min.toString());
+                    System.out.println("MAX: " + max.toString());
+                    break;
+                }
+                case "CME_DEMO": {
+                    try {
+                        for (Tranzactie t : tranzactii) tranzactii.remove(t);
+                    } catch (ConcurrentModificationException e) {
+                        System.out.println("ConcurrentModificationException prins: modificare in iteratie detectata.");
+                    }
+                    break;
+                }
+            }
+        }
     }
 }
