@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Carte {
+    private long id;
     private String titlu;
-    private int anLansare;
+    private Integer anLansare;
     private Autor autor;
     private Categorie categorie;
     int nrPagini;
     private List<Exemplar> exemplare;
 
-    public Carte(String titlu, int anLansare, Autor autor, Categorie categorie, int nrPagini) {
+    public Carte(String titlu, Integer anLansare, Autor autor, Categorie categorie, int nrPagini) {
         this.titlu = titlu;
         this.anLansare = anLansare;
         this.autor = autor;
@@ -21,15 +22,58 @@ public class Carte {
         exemplare = new ArrayList<>();
     }
 
+    public Carte() {
+        exemplare = new ArrayList<>();
+    }
+
+    public long getId() {
+        return id;
+    }
+
     public String getTitlu() {
         return this.titlu;
     }
+
+    public Integer getAnLansare() {
+        return anLansare;
+    }
+
     public Autor getAutor() {
         return this.autor;
     }
+
     public Categorie getCategorie() {
-        return this.categorie;
+        return categorie;
     }
+
+    public int getNrPagini() {
+        return nrPagini;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTitlu(String titlu) {
+        this.titlu = titlu;
+    }
+
+    public void setAnLansare(Integer anLansare) {
+        this.anLansare = anLansare;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+    }
+
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
+    }
+
+    public void setNrPagini(int nrPagini) {
+        this.nrPagini = nrPagini;
+    }
+
     public List<Exemplar> getExemplare() {
         return exemplare;
     }
@@ -39,8 +83,13 @@ public class Carte {
 
     @Override
     public String toString() {
-        return "Carte: titlu='" + titlu + "', an=" + anLansare + ", autor='"
-                + autor.getNume() + "', categorie='" + categorie.getNume()
-                + "', numar pagini=" + nrPagini;
+        if (autor != null)
+            return "Carte: id=" + id + ", titlu='" + titlu + "', an=" + anLansare + ", autor='"
+                    + autor.getNume() + "', categorie='" + categorie.getNume()
+                    + "', numar pagini=" + nrPagini;
+        else
+            return "Carte: id=" + id + ", titlu='" + titlu + "', an=" + anLansare
+                    + ", categorie='" + categorie.getNume()
+                    + "', numar pagini=" + nrPagini;
     }
 }

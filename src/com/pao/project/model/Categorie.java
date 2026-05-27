@@ -3,14 +3,29 @@ package com.pao.project.model;
 import java.util.Objects;
 
 public class Categorie {
+    private long id;
     private String nume;
 
     public Categorie(String nume) {
         this.nume = nume;
     }
 
+    public Categorie() {}
+
+    public long getId() {
+        return id;
+    }
+
     public String getNume() {
         return this.nume;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setNume(String nume) {
+        this.nume = nume;
     }
 
     @Override

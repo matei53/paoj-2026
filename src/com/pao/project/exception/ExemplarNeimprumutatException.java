@@ -4,6 +4,6 @@ import com.pao.project.model.Exemplar;
 
 public class ExemplarNeimprumutatException extends RuntimeException {
     public ExemplarNeimprumutatException(Exemplar e) {
-        super("Exemplarul " + e.cod() + " nu este imprumutat");
+        super("Exemplarul " + e.getCod() + " nu este imprumutat");
     }
 }

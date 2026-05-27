@@ -112,7 +112,7 @@ public class CarteService {
 
     public void returneazaImprumut(Exemplar e) {
         for (Imprumut i : imprumuturi) {
-            if (i.getExemplar().cod() == e.cod() && i.getDataReturnare() == null) {
+            if (i.getExemplar().getCod() == e.getCod() && i.getDataReturnare() == null) {
                 i.setDataReturnare();
                 System.out.print("Adauga penalizare pentru deteriorare? Y/N ");
                 String s = scanner.next();

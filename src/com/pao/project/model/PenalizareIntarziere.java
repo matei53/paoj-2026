@@ -10,6 +10,19 @@ public class PenalizareIntarziere extends Penalizare{
         zileIntarziere = (int) ChronoUnit.DAYS.between(data1, data2);
     }
 
+    public PenalizareIntarziere(long id, int zileIntarziere) {
+        this.id = id;
+        this.zileIntarziere = zileIntarziere;
+    }
+
+    public int getZileIntarziere() {
+        return zileIntarziere;
+    }
+
+    public void setZileIntarziere(int zileIntarziere) {
+        this.zileIntarziere = zileIntarziere;
+    }
+
     public String getTip() {
         return "intarziere";
     }

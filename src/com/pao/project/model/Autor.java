@@ -3,14 +3,34 @@ package com.pao.project.model;
 import java.util.Objects;
 
 public class Autor {
+    private long id;
     private String nume;
 
     public Autor(String nume) {
         this.nume = nume;
     }
 
+    public Autor() {}
+
+    public long getId() {
+        return id;
+    }
+
     public String getNume() {
         return this.nume;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setNume(String nume) {
+        this.nume = nume;
+    }
+
+    @Override
+    public String toString() {
+        return "Autor{" + "id=" + id + ", nume=" + nume + '}';
     }
 
     @Override

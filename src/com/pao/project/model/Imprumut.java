@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Imprumut implements Comparable<Imprumut>{
+    private long id;
     private Cititor cititor;
     private Carte carte;
     private Exemplar exemplar;
@@ -23,14 +24,14 @@ public class Imprumut implements Comparable<Imprumut>{
         this.penalizari = new ArrayList<>();
     }
 
-    public void setDataReturnare() {
-        dataReturnare = LocalDate.now();
-        if (dataReturnare.isAfter(dataScadenta))
-            adaugaPenalizare(new PenalizareIntarziere(dataScadenta, dataReturnare));
+    public Imprumut() {}
+
+    public long getId() {
+        return id;
     }
 
-    public void adaugaPenalizare(Penalizare p) {
-        penalizari.add(p);
+    public Cititor getCititor() {
+        return cititor;
     }
 
     public Carte getCarte() {
@@ -41,12 +42,58 @@ public class Imprumut implements Comparable<Imprumut>{
         return exemplar;
     }
 
+    public LocalDate getDataImprumut() {
+        return dataImprumut;
+    }
+
+    public LocalDate getDataScadenta() {
+        return dataScadenta;
+    }
+
     public LocalDate getDataReturnare() {
         return dataReturnare;
     }
 
-    public Cititor getCititor() {
-        return cititor;
+    public List<Penalizare> getPenalizari() {
+        return penalizari;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setCititor(Cititor cititor) {
+        this.cititor = cititor;
+    }
+
+    public void setCarte(Carte carte) {
+        this.carte = carte;
+    }
+
+    public void setExemplar(Exemplar exemplar) {
+        this.exemplar = exemplar;
+    }
+
+    public void setDataImprumut(LocalDate dataImprumut) {
+        this.dataImprumut = dataImprumut;
+    }
+
+    public void setDataScadenta(LocalDate dataScadenta) {
+        this.dataScadenta = dataScadenta;
+    }
+
+    public void setDataReturnare() {
+        dataReturnare = LocalDate.now();
+        if (dataReturnare.isAfter(dataScadenta))
+            adaugaPenalizare(new PenalizareIntarziere(dataScadenta, dataReturnare));
+    }
+
+    public void setDataReturnare(LocalDate dataReturnare) {
+        this.dataReturnare = dataReturnare;
+    }
+
+    public void adaugaPenalizare(Penalizare p) {
+        penalizari.add(p);
     }
 
     @Override
@@ -54,7 +101,7 @@ public class Imprumut implements Comparable<Imprumut>{
         StringBuilder s = new StringBuilder("IMPRUMUT:\n"
                 + "   - cititor: " + cititor.getNume() + "\n"
                 + "   - carte: " + carte.getTitlu() + "\n"
-                + "   - exemplar: " + exemplar.cod() + "\n"
+                + "   - exemplar: " + exemplar.getCod() + "\n"
                 + "   - data imprumut: " + dataImprumut.toString() + "\n"
                 + "   - data scadenta: " + dataScadenta.toString() + "\n");
         if (dataReturnare != null) {
